@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/glview_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <FrameLayout
+            android:id="@+id/glview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/white"
+            android:visibility="visible" />
+
+        <FrameLayout
+            android:id="@+id/glview_my"
+            android:layout_width="100dp"
+            android:layout_height="160dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="97.3dp"
+            android:layout_marginRight="28dp"
+            android:background="@color/white"
+            android:visibility="visible" />
+
+    </FrameLayout>
+
+    <!--<View-->
+    <!--android:background="@color/red"-->
+    <!--android:id="@+id/above_feed_text_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/voice_call_layout"-->
+    <!--android:layout_marginLeft="38.6dp"-->
+    <!--android:layout_marginRight="38.6dp"-->
+    <!--android:visibility="visible" />-->
+
+    <LinearLayout
+        android:id="@+id/voice_item_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="77.3dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/toggle_mute_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/calling_icon_mute_off"
+                android:button="@null" />
+
+            <TextView
+                android:id="@+id/toggle_mute_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="mute"
+                android:textColor="@color/secondary_black_color201"
+                android:textSize="11dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/end_call_btn"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="26dp"
+            android:layout_marginRight="26dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/calling_icon_reject"
+            android:gravity="center"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/toggle_speaker_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/calling_icon_speaker_off"
+                android:button="@null" />
+
+            <TextView
+                android:id="@+id/toggle_speaker_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="speaker"
+                android:textColor="@color/secondary_black_color201"
+                android:textSize="11dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/toggle_video_btn"
+                android:layout_width="58.6dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/calling_icon_videocall_off" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VideoCall"
+                android:textColor="@color/secondary_black_color201"
+                android:textSize="11dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/previous_end_call_btn"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_above="@id/voice_item_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/calling_icon_reject"
+        android:visibility="invisible" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"></LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/voice_call_layout"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_marginLeft="38.6dp"
+        android:layout_marginRight="38.6dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/voice_call_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/call_connect_topic_logo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:layout_toRightOf="@id/voice_call_image"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/voice_call_my_state_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="student text"
+                android:textColor="@color/primaray_green_color101"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/voice_call_time_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="18dp"
+                android:text="00:00:00"
+                android:textColor="@color/primaray_green_color101"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/video_call_layout"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:background="@color/secondary_black_color202"
+        android:gravity="center_vertical"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/video_call_my_state_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="18dp"
+            android:text="@string/common_nursetree_student_text"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/video_call_time_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="18dp"
+            android:text="00:00:00"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/disconnect_call_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.3"
+            android:background="@color/black"></LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@color/disconnect_call_background">
+
+            <RelativeLayout
+                android:id="@+id/call_connection_loading_layout"
+                android:layout_width="43.3dp"
+                android:layout_height="43.3dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="26.6dp">
+
+                <ImageView
+                    android:id="@+id/call_connection_loading_ani"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/call_coonection_loading_ani" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/call_coonection_loading_bg" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/disconnect_call_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/call_connection_loading_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16.3dp"
+                android:text="Connection Signal Low. Please wait..."
+                android:textColor="@color/white"
+                android:textSize="17.3dp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/voice_topic_state_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/voice_item_layout"
+        android:layout_below="@id/voice_call_layout"
+        android:layout_marginLeft="38.6dp"
+        android:layout_marginRight="38.6dp"
+        android:layout_marginTop="-60dp">
+
+        <RelativeLayout
+            android:id="@+id/voice_only_topic_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <View
+                android:id="@+id/topic_upper_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/nursetree_ai_layout"
+                android:layout_marginTop="9dp"
+                android:background="@color/primaray_green_color101" />
+
+
+            <LinearLayout
+                android:id="@+id/nursetree_ai_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/ai_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="33.3dp"
+                    android:layout_alignParentTop="true"
+                    android:text="NurseTree AI"
+                    android:textColor="@color/ai_learn_title_color"
+                    android:textSize="24dp" />
+
+                <LinearLayout
+                    android:id="@+id/interest_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="26.6dp"
+                    android:layout_below="@id/ai_title_textview"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/interest_or_analyzing_imageview"
+                        android:layout_width="26.6dp"
+                        android:layout_height="26.6dp"
+                        android:src="@drawable/icon_ai_interest" />
+
+                    <TextView
+                        android:id="@+id/ai_subtitle_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="26.6dp"
+                        android:layout_marginLeft="6.6dp"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="Learning Interests"
+                        android:textColor="@color/secondary_black_color201"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/voice_topic_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/topic_upper_view">
+
+                <!--<EditText-->
+                <!--android:id="@+id/voice_minor_topic_edittext"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="60.6dp"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:background="@color/secondary_black_color203"-->
+                <!--android:gravity="center"-->
+                <!--android:hint="Enter a word here"-->
+                <!--android:singleLine="true"-->
+                <!--android:lines="1"-->
+                <!--android:visibility="invisible" />-->
+                <TextView
+                    android:id="@+id/voice_minor_topic_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="128dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/secondary_black_color201"
+                    android:textSize="33.3dp" />
+
+            </RelativeLayout>
+
+            <!--<RelativeLayout-->
+            <!--android:visibility="invisible"-->
+            <!--android:id="@+id/add_word_layout"-->
+            <!--android:layout_width="114.6dp"-->
+            <!--android:layout_height="32dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_below="@id/topic_bottom_view"-->
+            <!--android:layout_marginTop="9dp"-->
+            <!--android:background="@drawable/next_word_btn"-->
+            <!--android:gravity="center">-->
+
+            <!--<ImageView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:id="@+id/add_word_image"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/call_topic_icon_add" />-->
+
+            <!--<TextView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@id/add_word_image"-->
+            <!--android:layout_marginLeft="3dp"-->
+            <!--android:text="Add word"-->
+            <!--android:textColor="@color/white" />-->
+
+            <!--</RelativeLayout>-->
+
+
+            <!--<RelativeLayout-->
+            <!--android:visibility="invisible"-->
+            <!--android:id="@+id/change_word_layout"-->
+            <!--android:layout_width="114.6dp"-->
+            <!--android:layout_height="32dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_below="@id/topic_bottom_view"-->
+            <!--android:layout_marginTop="9dp"-->
+            <!--android:background="@drawable/next_word_btn"-->
+            <!--android:gravity="center">-->
+
+            <!--<ImageView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:id="@+id/change_word_image"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/call_topic_icon_change" />-->
+
+            <!--<TextView-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_toRightOf="@id/change_word_image"-->
+            <!--android:layout_marginLeft="3dp"-->
+            <!--android:text="Change Word"-->
+            <!--android:textColor="@color/white" />-->
+
+            <!--</RelativeLayout>-->
+
+            <View
+                android:id="@+id/topic_bottom_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/voice_topic_layout"
+                android:layout_marginTop="9dp"
+                android:background="@color/primaray_green_color101" />
+
+            <RelativeLayout
+                android:id="@+id/want_learn_layout"
+                android:layout_width="114.6dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/topic_bottom_view"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/next_word_btn"
+                android:gravity="center"
+                android:visibility="invisible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/nt_talkchat_want_to_learn"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/not_interest_layout"
+                android:layout_width="114.6dp"
+                android:layout_height="32dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/topic_bottom_view"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/next_word_btn"
+                android:gravity="center"
+                android:visibility="invisible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/nt_talkchat_not_interest"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/level_test_know_layout"
+                android:layout_width="114.6dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/topic_bottom_view"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/next_word_btn"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/nt_talkchat_know"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/level_test_dont_know_layout"
+                android:layout_width="114.6dp"
+                android:layout_height="32dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/topic_bottom_view"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/next_word_btn"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/nt_talkchat_dont_know"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/next_word_layout"
+                android:layout_width="114.6dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/topic_bottom_view"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/next_word_btn"
+                android:gravity="center"
+                android:visibility="invisible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="3dp"
+                    android:text="@string/nt_talkchat_next"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/student_feedback_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/voice_only_topic_layout"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/secondary_black_color203"
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp"
+            android:paddingTop="3dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/refresh_background_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:background="@color/wt_black_white_color2"
+        android:visibility="gone"></View>
+
+    <RelativeLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/refresh_image" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="90dp"
+            android:text="@string/nt_help_refresh_time_title"
+            android:textAllCaps="false"
+            android:textColor="@color/wt_black_white_color1"
+            android:textSize="20dp"
+            android:textStyle="bold|italic" />
+    </RelativeLayout>
+
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/nursetree_ai_layout"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="250dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:visibility="gone">-->
+
+    <!--<ImageView-->
+    <!--android:layout_width="250dp"-->
+    <!--android:layout_height="250dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:background="@drawaai_imagemage" />-->
+
+    <!--<TextView-->
+    <!--android:textAlignment="center"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="48dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginBottom="60dp"-->
+    <!--android:text="NurseTree AI\nStart!"-->
+    <!--android:textAllCaps="false"-->
+    <!--android:textColor="@color/wt_black_white_color1"-->
+    <!--android:textSize="20dp"-->
+    <!--android:textStyle="bold|italic" />-->
+    <!--</RelativeLayout>-->
+
+    <LinearLayout
+        android:id="@+id/waiting_video_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/requesting_video_call"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/video_item_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="77.3dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:translationZ="20dp"
+        android:visibility="invisible">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/toggle_voice_btn"
+                android:layout_width="58.6dp"
+                android:layout_height="58.6dp"
+                android:layout_gravity="center"
+                android:background="@drawable/calling_icon_voicecall" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nt_talkchat_voice_call_text"
+                android:textColor="@color/white"
+                android:textSize="11dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginLeft="26dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/switch_camera_btn"
+                android:layout_width="58.6dp"
+                android:layout_height="58.6dp"
+                android:layout_gravity="center"
+                android:background="@drawable/calling_icon_change_selfshot" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/switch_camera_text"
+                android:textColor="@color/white"
+                android:textSize="11dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

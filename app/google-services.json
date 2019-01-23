@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "408770127762",
+    "firebase_url": "https://nursetree-a8aa3.firebaseio.com",
+    "project_id": "nursetree-a8aa3",
+    "storage_bucket": "nursetree-a8aa3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408770127762:android:dc4762f857f06459",
+        "android_client_info": {
+          "package_name": "com.forwiz.nursetree"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408770127762-97oktke57fe4h7fqlb5bnbur7ao5tajg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQBVobRocnH-DPHOi9rbqwlDvcdGngRhs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

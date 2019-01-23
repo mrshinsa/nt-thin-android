@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/calling_image" />
+
+            <TextView
+                android:id="@+id/my_user_type_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="NurseTree Student"
+                android:textColor="@color/primaray_green_color101"
+                android:textSize="24.6dp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/talk_accept_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="72dp"
+            android:layout_marginRight="66dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/talk_accept_button"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:background="@drawable/calling_icon_accept"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:includeFontPadding="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:textSize="16dp"
+                android:text="Accept"
+                android:textColor="@color/secondary_black_color201" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/voice_topic_state_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="184.3dp"
+            android:layout_marginLeft="38.6dp"
+            android:layout_marginRight="38.6dp"
+            android:layout_marginTop="51dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/major_topic_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:visibility="visible"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/call_topic_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/call_icon_8" />
+
+                <TextView
+                    android:id="@+id/call_major_topic_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:text="Culture"
+                    android:textColor="@color/secondary_black_color201"
+                    android:textSize="19.3dp" />
+
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/topic_upper_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/major_topic_layout"
+                android:layout_marginTop="9dp"
+                android:background="@color/primaray_green_color101" />
+
+            <RelativeLayout
+                android:id="@+id/call_topic_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/topic_upper_view">
+
+                <TextView
+                    android:id="@+id/call_minor_topic_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="128dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="Televison Shows"
+                    android:textColor="@color/secondary_black_color201"
+                    android:textSize="33.3dp" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/topic_bottom_view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/call_topic_layout"
+                android:layout_marginTop="9dp"
+                android:background="@color/primaray_green_color101" />
+
+            <RelativeLayout
+                android:id="@+id/next_word_layout"
+                android:layout_width="114.6dp"
+                android:layout_height="32dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/topic_bottom_view"
+                android:layout_marginTop="9dp"
+                android:background="@drawable/next_word_btn"
+                android:gravity="center"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:id="@+id/next_word_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/call_topic_icon_next" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/next_word_arrow"
+                    android:text="Next Word"
+                    android:textColor="@color/white" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/talk_decline_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="72dp"
+            android:layout_marginLeft="66dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+
+            <Button
+                android:id="@+id/talk_decline_button"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:background="@drawable/calling_icon_reject" />
+
+            <TextView
+                android:includeFontPadding="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:textSize="16dp"
+                android:text="Reject"
+                android:textColor="@color/secondary_black_color201" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
