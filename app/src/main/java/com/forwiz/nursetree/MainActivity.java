@@ -212,6 +212,7 @@ public class MainActivity extends BaseAppCompatActivity
 
     /* Web Service Coordinator delegate methods */
 
+    
     @Override
     public void onSessionConnectionDataReady(String apiKey, String sessionId, String token) {
 
