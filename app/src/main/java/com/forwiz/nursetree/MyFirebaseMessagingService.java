@@ -173,7 +173,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (TextUtils.isEmpty(UserInfo.myToken)) {
             Log.w(TAG, "[onMessageReceived] Cannot found User-Token, Processing will terminated");
 //            CallTracker.track(999);
-            return;
+//            return;
+        }
+        if(UserInfo.myUserType.isEmpty()){
+            UserInfo.myUserType = "normal";
         }
 
         // Data 가 없을 경우

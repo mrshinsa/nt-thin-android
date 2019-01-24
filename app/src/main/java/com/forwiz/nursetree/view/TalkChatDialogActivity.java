@@ -455,7 +455,8 @@ public class TalkChatDialogActivity extends BaseAppCompatActivity {
                             break;
                         default:
                             //none_user status 일 때
-                            showNoneUserDialog();
+//                            showNoneUserDialog();
+                            chatAcceptSuccess();
                             break;
                     }
 
@@ -500,7 +501,8 @@ public class TalkChatDialogActivity extends BaseAppCompatActivity {
                             showNoneSessionDialog();
                             break;
                         default:
-                            showNoneUserDialog();
+//                            showNoneUserDialog();
+                            chatCancelSuccess();
                             break;
                     }
 

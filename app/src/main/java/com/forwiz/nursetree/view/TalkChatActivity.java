@@ -69,6 +69,7 @@ import com.forwiz.nursetree.util.NTAlertDialog;
 import com.forwiz.nursetree.util.RefreshTimeActivityManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.opentok.android.AudioDeviceManager;
 import com.opentok.android.BaseAudioDevice;
 import com.opentok.android.Connection;
@@ -440,11 +441,13 @@ public class TalkChatActivity extends BaseAppCompatActivity implements Session.S
 
         UserInfo.myPushState = true;
         finishMediaPlayer();
+        AndroidThreeTen.init(this);
 
         if (startDateTime == null) {
             startDateTime = LocalDateTime.now();
             if (!StaticsUtility.IS_CARE_TEAM) {
                 if (startDateTime.getMinute() == 59) {
+                    startDateTime = startDateTime.withHour(startDateTime.getHour() + 1);
                     startDateTime = startDateTime.withMinute(0);
                     startDateTime = startDateTime.withSecond(0);
                 } else if (startDateTime.getMinute() % 10 == 9) {
