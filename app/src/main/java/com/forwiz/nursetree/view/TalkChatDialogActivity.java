@@ -525,7 +525,7 @@ public class TalkChatDialogActivity extends BaseAppCompatActivity {
         if (permissionCheck != PackageManager.PERMISSION_DENIED) {
             changeCallLogToReceive(getBaseContext().getContentResolver());
         }
-        TalkChatActivity_.intent(this).passedTopic(categoryTitle).passedWord(topicTitle).topicIconSeq(categorySeq).API_KEY(tboxApiKey).TBOX_TOKEN(tboxToken).expEndDate(expEndDate).needPaidCall(needPaidCall).categoryIconId(categoryIconId).flags(Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+        TalkChatActivity_.intent(this).API_KEY(tboxApiKey).TBOX_TOKEN(tboxToken).flags(Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
         am.removeActivity(this);
         finish();
     }
