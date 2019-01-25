@@ -8,31 +8,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.opengl.GLSurfaceView;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.CallLog;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
-import android.support.v7.app.AlertDialog;
 import android.text.SpannableString;
 import android.text.TextPaint;
-import android.text.method.LinkMovementMethod;
-import android.text.method.MovementMethod;
-import android.text.method.ScrollingMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
@@ -48,7 +40,6 @@ import android.view.animation.RotateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -56,19 +47,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.forwiz.nursetree.R;
-import com.forwiz.nursetree.common.ServerApiManager;
-import com.forwiz.nursetree.model.ObjectLevelWord;
-import com.forwiz.nursetree.model.ObjectWordInterest;
-import com.forwiz.nursetree.model.TopicCategoryWordObject;
-import com.forwiz.nursetree.model.WordCategory;
 import com.forwiz.nursetree.statistics.StaticsUtility;
 import com.forwiz.nursetree.statistics.UserInfo;
-import com.forwiz.nursetree.util.ActivityManager;
-import com.forwiz.nursetree.util.CustomProgressDialog;
 import com.forwiz.nursetree.util.NTAlertDialog;
-import com.forwiz.nursetree.util.RefreshTimeActivityManager;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.opentok.android.AudioDeviceManager;
 import com.opentok.android.BaseAudioDevice;
@@ -82,36 +63,18 @@ import com.opentok.android.Subscriber;
 import com.opentok.android.SubscriberKit;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.threeten.bp.Duration;
 import org.threeten.bp.LocalDateTime;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by YunHo on 2017-03-21.
@@ -336,8 +299,8 @@ public class TalkChatActivity extends BaseAppCompatActivity implements Session.S
             }
         }
 
-        ActivityManager.getInstance().addActivity(this);
-        RefreshTimeActivityManager.getInstance().addActivity(this);
+//        ActivityManager.getInstance().addActivity(this);
+//        RefreshTimeActivityManager.getInstance().addActivity(this);
 
         inAnim.setInterpolator(new LinearInterpolator());
         inAnim.setRepeatCount(Animation.INFINITE);
