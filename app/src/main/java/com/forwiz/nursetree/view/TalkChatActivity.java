@@ -300,7 +300,7 @@ public class TalkChatActivity extends BaseAppCompatActivity implements Session.S
         }
 
 //        ActivityManager.getInstance().addActivity(this);
-//        RefreshTimeActivityManager.getInstance().addActivity(this);
+
 
         inAnim.setInterpolator(new LinearInterpolator());
         inAnim.setRepeatCount(Animation.INFINITE);

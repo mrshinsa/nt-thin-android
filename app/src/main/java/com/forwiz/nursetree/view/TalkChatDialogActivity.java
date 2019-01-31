@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.forwiz.nursetree.OpenTokConfig;
 import com.forwiz.nursetree.R;
 import com.forwiz.nursetree.common.ServerApiManager;
 import com.forwiz.nursetree.statistics.StaticsUtility;
@@ -314,7 +315,7 @@ public class TalkChatDialogActivity extends BaseAppCompatActivity {
         UserInfo.myPushState = true;
         updateButton();
 
-        StaticsUtility.CALLER_ID = UserInfo.myToken;
+        StaticsUtility.CALLER_ID = OpenTokConfig.TOKEN;
         if (topicTitle.equals("Free Talk"))
             topicTitle = "";
 

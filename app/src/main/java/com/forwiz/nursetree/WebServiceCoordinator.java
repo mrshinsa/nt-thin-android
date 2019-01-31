@@ -54,6 +54,12 @@ public class WebServiceCoordinator {
         }));
     }
 
+
+    public void fetchSessionConnectionData2(String sessionInfoUrlEndpoint) {
+        Log.i(LOG_TAG, "WebServiceCoordinator returned session information");
+        delegate.onSessionConnectionDataReady(OpenTokConfig.API_KEY, OpenTokConfig.SESSION_ID, OpenTokConfig.TOKEN);
+    }
+
     public static interface Listener {
 
         void onSessionConnectionDataReady(String apiKey, String sessionId, String token);

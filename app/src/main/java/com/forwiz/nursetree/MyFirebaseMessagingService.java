@@ -102,6 +102,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public static final String KEY_NOTICE_MSG = "notice_msg";
 
     Context context;
+
     /**
      * Called when message is received.
      *
@@ -161,7 +162,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //        am = com.forwiz.nursetree.util.ActivityManager.getInstance();
 
         SharedPreferences tokenPrefs = getSharedPreferences("token", MODE_PRIVATE);
-        UserInfo.myToken = tokenPrefs.getString("preferToken", "");
+        OpenTokConfig.TOKEN = tokenPrefs.getString("preferToken", "");
 
         SharedPreferences userTypePrefs = getSharedPreferences("userType", MODE_PRIVATE);
         UserInfo.myUserType = userTypePrefs.getString("preferUserType", "");
@@ -170,12 +171,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         lastRoomNumber = lastRoomNumberPrefs.getString("roomNumber", "");
 
         // User Token 미검출시 로직처리 종료
-        if (TextUtils.isEmpty(UserInfo.myToken)) {
+        if (TextUtils.isEmpty(OpenTokConfig.TOKEN)) {
             Log.w(TAG, "[onMessageReceived] Cannot found User-Token, Processing will terminated");
 //            CallTracker.track(999);
 //            return;
         }
-        if(UserInfo.myUserType.isEmpty()){
+        if (UserInfo.myUserType.isEmpty()) {
             UserInfo.myUserType = "normal";
         }
 
@@ -201,7 +202,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         switch (pushType) {
             case "call":
-                createChatActivity(remoteMessage, pushUid, callType, lastRoomNumber);
+//                createChatActivity(remoteMessage, pushUid, callType, lastRoomNumber);
+                createChatActivity2(remoteMessage, pushUid, callType, lastRoomNumber);
                 break;
             case "cancel":
                 cancelChatActivity(remoteMessage);
@@ -236,6 +238,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //                }
 //                break;
         }
+
+    }
+
+    private void createChatActivity2(RemoteMessage remoteMessage, String pushUid, String callType, String lastRoomNumber) {
+
+        OpenTokConfig.API_KEY = remoteMessage.getData().get(KEY_TBOX_APIKEY);
+        OpenTokConfig.SESSION_ID = remoteMessage.getData().get(KEY_ROOM_NUMBER);
+        OpenTokConfig.TOKEN = remoteMessage.getData().get(KEY_TBOX_TOKEN);
+
+
+        getSharedPreferences("token", MODE_PRIVATE).edit().putString("preferToken", OpenTokConfig.TOKEN).commit();
+
+
+
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+
 
     }
     // [END receive_message]
@@ -282,7 +302,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     /**
      * Persist token to third-party servers.
-     *
+     * <p>
      * Modify this method to associate the user's FCM InstanceID token with any server-side account
      * maintained by your application.
      *
@@ -292,41 +312,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // TODO: Implement this method to send token to your app server.
     }
 
-    /**
-     * Create and show a simple notification containing the received FCM message.
-     *
-     * @param messageBody FCM message body received.
-     */
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        String channelId = getString(R.string.default_notification_channel_id);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                        .setContentTitle(getString(R.string.fcm_message))
-                        .setContentText(messageBody)
-                        .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
-
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-    }
 
     private void sendPushReceivedTracking(final String pushUid) {
         Log.d(TAG, "[sendPushReceivedTracking] Start send tracking of pushUid: " + pushUid);
@@ -450,7 +435,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 StaticsUtility.IS_CARE_TEAM = false;
             }
 
-            StaticsUtility.CALLER_ID = UserInfo.myToken;
+            StaticsUtility.CALLER_ID = OpenTokConfig.TOKEN;
             StaticsUtility.NEED_INTEREST_TEST = isFirstInterestCall;
 
             ActivityManager actMng = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
