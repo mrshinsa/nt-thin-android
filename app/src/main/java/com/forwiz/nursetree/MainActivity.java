@@ -315,8 +315,8 @@ public class MainActivity extends BaseAppCompatActivity
 
         UserInfo.myPushState = true;
 
-//        int TALK_TIME_IN_MINUTES = 1000 * 60 * 9;
-        int TALK_TIME_IN_MINUTES = 1000 * 10;
+        int TALK_TIME_IN_MINUTES = 1000 * 60 * 9;
+//        int TALK_TIME_IN_MINUTES = 1000 * 30;
 
         Log.d(LOG_TAG, "Will hang up after 10 seconds");
 
@@ -329,8 +329,6 @@ public class MainActivity extends BaseAppCompatActivity
         }, TALK_TIME_IN_MINUTES);
 
     }
-
-
 
     @Override
     public void onDisconnected(Session session) {
