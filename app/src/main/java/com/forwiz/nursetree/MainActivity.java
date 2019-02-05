@@ -1,22 +1,19 @@
 package com.forwiz.nursetree;
 
-import android.content.Intent;
-import android.opengl.GLSurfaceView;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.support.annotation.NonNull;
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.forwiz.nursetree.OpenTokConfig;
-import com.forwiz.nursetree.WebServiceCoordinator;
 import com.forwiz.nursetree.statistics.UserInfo;
 import com.forwiz.nursetree.view.BaseAppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,18 +23,14 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.opentok.android.AudioDeviceManager;
 import com.opentok.android.BaseAudioDevice;
 import com.opentok.android.Connection;
-import com.opentok.android.Session;
-import com.opentok.android.Stream;
+import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
 import com.opentok.android.PublisherKit;
+import com.opentok.android.Session;
+import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
-import com.opentok.android.BaseVideoRenderer;
-import com.opentok.android.OpentokError;
 import com.opentok.android.SubscriberKit;
-import com.forwiz.nursetree.R;
-
-
-import org.threeten.bp.LocalDateTime;
+import com.opentok.impl.OpentokErrorImpl;
 
 import java.util.List;
 
@@ -67,8 +60,7 @@ public class MainActivity extends BaseAppCompatActivity
     private Publisher mPublisher;
     private Subscriber mSubscriber;
 
-    private FrameLayout mPublisherViewContainer;
-    private FrameLayout mSubscriberViewContainer;
+    TextView callStatusText;
 
     private static final String TAG = "MainActivity";
 
@@ -82,8 +74,8 @@ public class MainActivity extends BaseAppCompatActivity
         setContentView(R.layout.activity_main);
 
         // initialize view objects from your layout
-        mPublisherViewContainer = (FrameLayout) findViewById(R.id.publisher_container);
-        mSubscriberViewContainer = (FrameLayout) findViewById(R.id.subscriber_container);
+        callStatusText = (TextView) findViewById(R.id.call_status);
+        callStatusText.setText("Not Connected");
 
         Button logTokenButton = findViewById(R.id.logTokenButton);
         logTokenButton.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +93,11 @@ public class MainActivity extends BaseAppCompatActivity
         disconnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSession.disconnect();
+                try {
+                    mSession.disconnect();
+                } catch (Exception e) {
+                    Log.w(LOG_TAG, "not connected to session");
+                }
             }
         });
         getToken();
@@ -238,7 +234,7 @@ public class MainActivity extends BaseAppCompatActivity
 
     /* Web Service Coordinator delegate methods */
 
-    
+
     @Override
     public void onSessionConnectionDataReady(String apiKey, String sessionId, String token) {
 
@@ -254,38 +250,6 @@ public class MainActivity extends BaseAppCompatActivity
         finish();
 
     }
-
-    /* Session Listener methods */
-//
-//    @Override
-//    public void onConnected(Session session) {
-//
-//        Log.d(LOG_TAG, "onConnected: Connected to session: " + session.getSessionId());
-//
-//        // initialize Publisher and set this object to listen to Publisher events
-//        mPublisher = new Publisher.Builder(this).build();
-//        mPublisher.setPublisherListener(this);
-//
-//        // set publisher video style to fill view
-//        mPublisher.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
-//                BaseVideoRenderer.STYLE_VIDEO_FILL);
-//        mPublisherViewContainer.addView(mPublisher.getView());
-//        if (mPublisher.getView() instanceof GLSurfaceView) {
-//            ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(true);
-//        }
-//
-//        mSession.publish(mPublisher);
-//
-//        Log.d(LOG_TAG, "Will hang up after 10 seconds");
-//        final Handler handler = new Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                mSession.disconnect();
-//            }
-//        }, TALK_TIME_IN_MINUTES);
-//
-//    }
 
 
     @Override
@@ -316,24 +280,33 @@ public class MainActivity extends BaseAppCompatActivity
         UserInfo.myPushState = true;
 
         int TALK_TIME_IN_MINUTES = 1000 * 60 * 9;
-//        int TALK_TIME_IN_MINUTES = 1000 * 30;
+//        int TALK_TIME_IN_MINUTES = 1000 * 60;
 
-        Log.d(LOG_TAG, "Will hang up after 10 seconds");
+        Log.d(LOG_TAG, "Will hang up after " + TALK_TIME_IN_MINUTES / (1000 * 60) + " minutes");
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mSession.disconnect();
+                try {
+                    mSession.disconnect();
+                } catch (Exception e) {
+                    Log.w(LOG_TAG, "not connected to session");
+                }
             }
         }, TALK_TIME_IN_MINUTES);
+
+        callStatusText.setText("Connected");
+        callStatusText.setTextColor(Color.BLUE);
 
     }
 
     @Override
     public void onDisconnected(Session session) {
 
-        Log.d(LOG_TAG, "onDisconnected: Disconnected from session: " + session.getSessionId());
+        Log.i(LOG_TAG, "onDisconnected: Disconnected from session: " + session.getSessionId());
+        callStatusText.setText("Not Connected");
+        callStatusText.setTextColor(Color.RED);
     }
 
     @Override
@@ -343,10 +316,11 @@ public class MainActivity extends BaseAppCompatActivity
 
         if (mSubscriber == null) {
             mSubscriber = new Subscriber.Builder(this, stream).build();
-            mSubscriber.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
+
+//            mSubscriber.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
             mSubscriber.setSubscriberListener(this);
             mSession.subscribe(mSubscriber);
-            mSubscriberViewContainer.addView(mSubscriber.getView());
+//            mSubscriberViewContainer.addView(mSubscriber.getView());
         }
     }
 
@@ -357,7 +331,7 @@ public class MainActivity extends BaseAppCompatActivity
 
         if (mSubscriber != null) {
             mSubscriber = null;
-            mSubscriberViewContainer.removeAllViews();
+//            mSubscriberViewContainer.removeAllViews();
         }
     }
 
@@ -395,7 +369,6 @@ public class MainActivity extends BaseAppCompatActivity
 
     @Override
     public void onConnected(SubscriberKit subscriberKit) {
-
         Log.d(LOG_TAG, "onConnected: Subscriber connected. Stream: " + subscriberKit.getStream().getStreamId());
     }
 
