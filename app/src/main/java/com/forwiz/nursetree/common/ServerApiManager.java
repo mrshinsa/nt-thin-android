@@ -3,6 +3,7 @@ package com.forwiz.nursetree.common;
 import android.content.SharedPreferences;
 
 import com.forwiz.nursetree.ApplicationClass;
+import com.forwiz.nursetree.OpenTokConfig;
 import com.forwiz.nursetree.R;
 import com.forwiz.nursetree.statistics.UserInfo;
 
@@ -101,7 +102,7 @@ public class ServerApiManager {
      * @return OkHttp에서 사용할 Request
      */
     public static Request getRequestPost(ServerApi serverApi, HashMap<String, Object> params) {
-        return getRequestPost(serverApi, params, UserInfo.myToken);
+        return getRequestPost(serverApi, params, OpenTokConfig.TOKEN);
     }
 
     /**
@@ -111,11 +112,11 @@ public class ServerApiManager {
      * @return OkHttp에서 사용할 Request
      */
     public static Request getRequestPost(ServerApi serverApi) {
-        if(UserInfo.myToken.isEmpty()){
+        if(OpenTokConfig.TOKEN.isEmpty()){
             SharedPreferences tokenPrefs = ApplicationClass.getAppContext().getSharedPreferences("token", MODE_PRIVATE);
-            UserInfo.myToken = tokenPrefs.getString("preferToken", "");
+            OpenTokConfig.TOKEN = tokenPrefs.getString("preferToken", "");
         }
-        return getRequestPost(serverApi, null, UserInfo.myToken);
+        return getRequestPost(serverApi, null, OpenTokConfig.TOKEN);
     }
 
     /**
@@ -136,7 +137,7 @@ public class ServerApiManager {
 
         return new Request.Builder()
                 .url(urlBuilder.build())
-                .header("Authorization", UserInfo.myToken)
+                .header("Authorization", OpenTokConfig.TOKEN)
                 .get()
                 .build();
     }
@@ -166,7 +167,7 @@ public class ServerApiManager {
         }
         return new Request.Builder()
                 .url(urlBuilder.build())
-                .header("Authorization", UserInfo.myToken)
+                .header("Authorization", OpenTokConfig.TOKEN)
                 .get()
                 .build();
     }
@@ -178,7 +179,7 @@ public class ServerApiManager {
 
         Request.Builder requestBuilder = new Request.Builder();
         if (token != null) {
-            requestBuilder.header("Authorization", UserInfo.myToken);
+            requestBuilder.header("Authorization", OpenTokConfig.TOKEN);
         }
 
         return requestBuilder

@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context="com.forwiz.nursetree.MainActivity">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+    <Button
+        android:id="@+id/logTokenButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
 
-        <FrameLayout
-            android:id="@+id/subscriber_container"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+        android:layout_marginTop="200dp"
+        android:text="@string/log_token" />
 
-            <Button
-                android:id="@+id/logTokenButton"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/log_token" />
+    <Button
+        android:id="@+id/disconnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/logTokenButton"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="Disconnect" />
+        android:text="Disconnect" />
 
-        </FrameLayout>
+    <TextView
+        android:id="@+id/call_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textSize="30dp"
+        android:layout_below="@+id/disconnect"/>
+        android:text="TextView" />
 
-        <FrameLayout
-            android:id="@+id/publisher_container"
-            android:layout_width="@dimen/publisher_width"
-            android:layout_height="@dimen/publisher_height"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="@dimen/publisher_bottom_margin"
-            android:layout_marginEnd="@dimen/publisher_right_margin"
-            android:layout_marginRight="@dimen/publisher_end_margin"
-            android:padding="@dimen/publisher_padding"
-            />
-
-    </FrameLayout>
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

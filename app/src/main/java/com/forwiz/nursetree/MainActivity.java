@@ -1,35 +1,36 @@
 package com.forwiz.nursetree;
 
-import android.opengl.GLSurfaceView;
-import android.support.v7.app.AppCompatActivity;
-import android.support.annotation.NonNull;
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.forwiz.nursetree.OpenTokConfig;
-import com.forwiz.nursetree.WebServiceCoordinator;
+import com.forwiz.nursetree.statistics.UserInfo;
 import com.forwiz.nursetree.view.BaseAppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.opentok.android.Session;
-import com.opentok.android.Stream;
+import com.opentok.android.AudioDeviceManager;
+import com.opentok.android.BaseAudioDevice;
+import com.opentok.android.Connection;
+import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
 import com.opentok.android.PublisherKit;
+import com.opentok.android.Session;
+import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
-import com.opentok.android.BaseVideoRenderer;
-import com.opentok.android.OpentokError;
 import com.opentok.android.SubscriberKit;
-import com.forwiz.nursetree.R;
-
+import com.opentok.impl.OpentokErrorImpl;
 
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class MainActivity extends BaseAppCompatActivity
         WebServiceCoordinator.Listener,
         Session.SessionListener,
         PublisherKit.PublisherListener,
+        PublisherKit.AudioLevelListener,
+        Session.SignalListener,
         SubscriberKit.SubscriberListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -56,9 +59,7 @@ public class MainActivity extends BaseAppCompatActivity
     private Session mSession;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
-
-    private FrameLayout mPublisherViewContainer;
-    private FrameLayout mSubscriberViewContainer;
+    TextView callStatusText;
 
     private static final String TAG = "MainActivity";
 
@@ -72,8 +73,8 @@ public class MainActivity extends BaseAppCompatActivity
         setContentView(R.layout.activity_main);
 
         // initialize view objects from your layout
-        mPublisherViewContainer = (FrameLayout) findViewById(R.id.publisher_container);
-        mSubscriberViewContainer = (FrameLayout) findViewById(R.id.subscriber_container);
+        callStatusText = (TextView) findViewById(R.id.call_status);
+        callStatusText.setText("Not Connected");
 
         Button logTokenButton = findViewById(R.id.logTokenButton);
         logTokenButton.setOnClickListener(new View.OnClickListener() {
@@ -87,11 +88,30 @@ public class MainActivity extends BaseAppCompatActivity
             }
         });
 
+        Button disconnectButton = findViewById(R.id.disconnect);
+        disconnectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    mSession.disconnect();
+                } catch (Exception e) {
+                    Log.w(LOG_TAG, "not connected to session");
+                }
+            }
+        });
         getToken();
-
 
 //        requestPermissions()
 //
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        // getIntent() should always return the most recent
+        setIntent(intent);
+        requestPermissions();
+
     }
 
     private void getToken() {
@@ -106,6 +126,7 @@ public class MainActivity extends BaseAppCompatActivity
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
+                        OpenTokConfig.TOKEN = token;
 
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
@@ -193,7 +214,7 @@ public class MainActivity extends BaseAppCompatActivity
                 // session initialization occurs once data is returned, in onSessionConnectionDataReady
                 if (OpenTokConfig.isWebServerConfigUrlValid()) {
                     mWebServiceCoordinator = new WebServiceCoordinator(this, this);
-                    mWebServiceCoordinator.fetchSessionConnectionData(OpenTokConfig.SESSION_INFO_ENDPOINT);
+                    mWebServiceCoordinator.fetchSessionConnectionData2(OpenTokConfig.SESSION_INFO_ENDPOINT);
                 } else {
                     showConfigError("Configuration Error", OpenTokConfig.webServerConfigErrorMessage);
                 }
@@ -212,7 +233,7 @@ public class MainActivity extends BaseAppCompatActivity
 
     /* Web Service Coordinator delegate methods */
 
-    
+
     @Override
     public void onSessionConnectionDataReady(String apiKey, String sessionId, String token) {
 
@@ -229,32 +250,57 @@ public class MainActivity extends BaseAppCompatActivity
 
     }
 
-    /* Session Listener methods */
 
     @Override
     public void onConnected(Session session) {
 
-        Log.d(LOG_TAG, "onConnected: Connected to session: " + session.getSessionId());
+        Log.i(LOG_TAG, "Session Connected");
+//
+//        for (Subscriber subscriber : subscriberList) {
+//            if (subscriber != null) {
+//                subscriber.setSubscribeToAudio(true);
+//            }
+//        }
 
-        // initialize Publisher and set this object to listen to Publisher events
-        mPublisher = new Publisher.Builder(this).build();
-        mPublisher.setPublisherListener(this);
+        if (mPublisher == null) {
+            mPublisher = new Publisher.Builder(this).audioBitrate(28000).videoTrack(false).build();
+            mPublisher.setPublisherListener(this);
+            mPublisher.setPublishVideo(false);
+            mPublisher.setAudioLevelListener(this);
+//            publisherList.add(mPublisher);
+        }
+        AudioDeviceManager.getAudioDevice().setOutputMode(BaseAudioDevice.OutputMode.Handset);
 
-        // set publisher video style to fill view
-        mPublisher.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
-                BaseVideoRenderer.STYLE_VIDEO_FILL);
-        mPublisherViewContainer.addView(mPublisher.getView());
-        if (mPublisher.getView() instanceof GLSurfaceView) {
-            ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(true);
+        if (mSession != null && mPublisher != null) {
+            mSession.publish(mPublisher);
+            mSession.setSignalListener(this);
         }
 
-        mSession.publish(mPublisher);
+        UserInfo.myPushState = true;
+
+        int TALK_TIME_IN_MINUTES = 1000 * 60 * 9;
+        Log.d(LOG_TAG, "Will hang up after " + TALK_TIME_IN_MINUTES / (1000 * 60) + " minutes");
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mSession.disconnect();
+                } catch (Exception e) {
+                    Log.w(LOG_TAG, "not connected to session");
+                }
+            }
+        }, TALK_TIME_IN_MINUTES);
+        callStatusText.setText("Connected");
+        callStatusText.setTextColor(Color.BLUE);
     }
 
     @Override
     public void onDisconnected(Session session) {
 
-        Log.d(LOG_TAG, "onDisconnected: Disconnected from session: " + session.getSessionId());
+        Log.i(LOG_TAG, "onDisconnected: Disconnected from session: " + session.getSessionId());
+        callStatusText.setText("Not Connected");
+        callStatusText.setTextColor(Color.RED);
     }
 
     @Override
@@ -264,10 +310,11 @@ public class MainActivity extends BaseAppCompatActivity
 
         if (mSubscriber == null) {
             mSubscriber = new Subscriber.Builder(this, stream).build();
-            mSubscriber.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
+
+//            mSubscriber.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
             mSubscriber.setSubscriberListener(this);
             mSession.subscribe(mSubscriber);
-            mSubscriberViewContainer.addView(mSubscriber.getView());
+//            mSubscriberViewContainer.addView(mSubscriber.getView());
         }
     }
 
@@ -278,7 +325,7 @@ public class MainActivity extends BaseAppCompatActivity
 
         if (mSubscriber != null) {
             mSubscriber = null;
-            mSubscriberViewContainer.removeAllViews();
+//            mSubscriberViewContainer.removeAllViews();
         }
     }
 
@@ -316,7 +363,6 @@ public class MainActivity extends BaseAppCompatActivity
 
     @Override
     public void onConnected(SubscriberKit subscriberKit) {
-
         Log.d(LOG_TAG, "onConnected: Subscriber connected. Stream: " + subscriberKit.getStream().getStreamId());
     }
 
@@ -355,4 +401,13 @@ public class MainActivity extends BaseAppCompatActivity
                 .show();
     }
 
+    @Override
+    public void onAudioLevelUpdated(PublisherKit publisherKit, float v) {
+
+    }
+
+    @Override
+    public void onSignalReceived(Session session, String s, String s1, Connection connection) {
+
+    }
 }

@@ -8,8 +8,8 @@ android {
         applicationId "com.forwiz.nursetree"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 88
+        versionName "3.1.8"
     }
 
     compileOptions {

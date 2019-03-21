@@ -5,7 +5,7 @@ package com.forwiz.nursetree.statistics;
  */
 
 public class UserInfo {
-    public static String myToken = "";
+//    public static String myToken = "";
     public static String myUserType = "";
     public static String myNickname = "";
     public static String myNative = "";

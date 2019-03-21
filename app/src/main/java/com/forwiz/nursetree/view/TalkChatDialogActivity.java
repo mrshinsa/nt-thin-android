@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.forwiz.nursetree.OpenTokConfig;
 import com.forwiz.nursetree.R;
 import com.forwiz.nursetree.common.ServerApiManager;
 import com.forwiz.nursetree.statistics.StaticsUtility;
@@ -314,7 +315,7 @@ public class TalkChatDialogActivity extends BaseAppCompatActivity {
         UserInfo.myPushState = true;
         updateButton();
 
-        StaticsUtility.CALLER_ID = UserInfo.myToken;
+        StaticsUtility.CALLER_ID = OpenTokConfig.TOKEN;
         if (topicTitle.equals("Free Talk"))
             topicTitle = "";
 
@@ -455,7 +456,8 @@ public class TalkChatDialogActivity extends BaseAppCompatActivity {
                             break;
                         default:
                             //none_user status 일 때
-                            showNoneUserDialog();
+//                            showNoneUserDialog();
+                            chatAcceptSuccess();
                             break;
                     }
 
@@ -500,7 +502,8 @@ public class TalkChatDialogActivity extends BaseAppCompatActivity {
                             showNoneSessionDialog();
                             break;
                         default:
-                            showNoneUserDialog();
+//                            showNoneUserDialog();
+                            chatCancelSuccess();
                             break;
                     }
 
@@ -523,7 +526,7 @@ public class TalkChatDialogActivity extends BaseAppCompatActivity {
         if (permissionCheck != PackageManager.PERMISSION_DENIED) {
             changeCallLogToReceive(getBaseContext().getContentResolver());
         }
-        TalkChatActivity_.intent(this).passedTopic(categoryTitle).passedWord(topicTitle).topicIconSeq(categorySeq).API_KEY(tboxApiKey).TBOX_TOKEN(tboxToken).expEndDate(expEndDate).needPaidCall(needPaidCall).categoryIconId(categoryIconId).flags(Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
+        TalkChatActivity_.intent(this).API_KEY(tboxApiKey).TBOX_TOKEN(tboxToken).flags(Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
         am.removeActivity(this);
         finish();
     }
