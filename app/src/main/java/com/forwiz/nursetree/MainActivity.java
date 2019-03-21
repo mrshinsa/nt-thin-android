@@ -280,10 +280,7 @@ public class MainActivity extends BaseAppCompatActivity
         UserInfo.myPushState = true;
 
         int TALK_TIME_IN_MINUTES = 1000 * 60 * 9;
-//        int TALK_TIME_IN_MINUTES = 1000 * 60;
-
         Log.d(LOG_TAG, "Will hang up after " + TALK_TIME_IN_MINUTES / (1000 * 60) + " minutes");
-
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -295,10 +292,8 @@ public class MainActivity extends BaseAppCompatActivity
                 }
             }
         }, TALK_TIME_IN_MINUTES);
-
         callStatusText.setText("Connected");
         callStatusText.setTextColor(Color.BLUE);
-
     }
 
     @Override
