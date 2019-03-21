@@ -59,7 +59,6 @@ public class MainActivity extends BaseAppCompatActivity
     private Session mSession;
     private Publisher mPublisher;
     private Subscriber mSubscriber;
-
     TextView callStatusText;
 
     private static final String TAG = "MainActivity";
