@@ -93,7 +93,23 @@ public class MainActivity extends BaseAppCompatActivity
             @Override
             public void onClick(View v) {
                 try {
-                    mSession.disconnect();
+                    //Releasing a resource to correct a problem that occurs because the resource can not be released at the end of the call.
+                    if (mSession != null) {
+                        if (mPublisher != null) {
+                            mSession.unpublish(mPublisher);
+                        }
+                        if (mSubscriber != null) {
+                            mSession.unsubscribe(mSubscriber);
+                        }
+                        mSession.disconnect();
+                        mSession = null;
+                    }
+                    if (mSubscriber != null) {
+                        mSubscriber = null;
+                    }
+                    if (mPublisher != null) {
+                        mPublisher = null;
+                    }
                 } catch (Exception e) {
                     Log.w(LOG_TAG, "not connected to session");
                 }
@@ -285,7 +301,23 @@ public class MainActivity extends BaseAppCompatActivity
             @Override
             public void run() {
                 try {
-                    mSession.disconnect();
+                    //Releasing a resource to correct a problem that occurs because the resource can not be released at the end of the call.
+                    if (mSession != null) {
+                        if (mPublisher != null) {
+                            mSession.unpublish(mPublisher);
+                        }
+                        if (mSubscriber != null) {
+                            mSession.unsubscribe(mSubscriber);
+                        }
+                        mSession.disconnect();
+                        mSession = null;
+                    }
+                    if (mSubscriber != null) {
+                        mSubscriber = null;
+                    }
+                    if (mPublisher != null) {
+                        mPublisher = null;
+                    }
                 } catch (Exception e) {
                     Log.w(LOG_TAG, "not connected to session");
                 }
