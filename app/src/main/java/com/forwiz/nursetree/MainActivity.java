@@ -102,7 +102,6 @@ public class MainActivity extends BaseAppCompatActivity
                             mSession.unsubscribe(mSubscriber);
                         }
                         mSession.disconnect();
-                        mSession = null;
                     }
                     if (mSubscriber != null) {
                         mSubscriber = null;
@@ -310,7 +309,6 @@ public class MainActivity extends BaseAppCompatActivity
                             mSession.unsubscribe(mSubscriber);
                         }
                         mSession.disconnect();
-                        mSession = null;
                     }
                     if (mSubscriber != null) {
                         mSubscriber = null;
@@ -416,7 +414,8 @@ public class MainActivity extends BaseAppCompatActivity
     private void showOpenTokError(OpentokError opentokError) {
 
         Toast.makeText(this, opentokError.getErrorDomain().name() + ": " + opentokError.getMessage() + " Please, see the logcat.", Toast.LENGTH_LONG).show();
-        finish();
+        // 'publisher' or 'subscriber' is considered an error even if the resource is released, so 'finish()' is removed so that the Activity is not end.
+//        finish();
     }
 
     private void showConfigError(String alertTitle, final String errorMessage) {
@@ -439,7 +438,27 @@ public class MainActivity extends BaseAppCompatActivity
     }
 
     @Override
-    public void onSignalReceived(Session session, String s, String s1, Connection connection) {
-
+    public void onSignalReceived(Session session, String type, String data, Connection connection) {
+        // Fixed to end call by receiving 'end' signal
+        Log.d("receivedSignal", "received type: " + type + "received data: " + data);
+        switch (data) {
+            case "end":
+                if (mSession != null) {
+                    if (mPublisher != null) {
+                        mSession.unpublish(mPublisher);
+                    }
+                    if (mSubscriber != null) {
+                        mSession.unsubscribe(mSubscriber);
+                    }
+                    mSession.disconnect();
+                }
+                if (mSubscriber != null) {
+                    mSubscriber = null;
+                }
+                if (mPublisher != null) {
+                    mPublisher = null;
+                }
+                break;
+        }
     }
 }
